@@ -34,3 +34,15 @@ export const editToDo = (newToDo, id) => {
     },
   }).then((response) => response.json());
 };
+
+export const completeToDo = (id, isCompleted) => {
+  return fetch(`${API_URL}/todos/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      completed: !isCompleted,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  }).then((response) => response.json());
+};
