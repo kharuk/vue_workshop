@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "I18n app",
+    "foundItems": "Totally found:",
+    "items": "item | items"
+  },
+  "lang": {
+    "en": "English",
+    "ru": "Russian"
+  },
+  "form": {
+    "required": "Required",
+    "newTodoPlaceholder": "What to do?"
+  }
+}

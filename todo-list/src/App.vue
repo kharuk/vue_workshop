@@ -1,93 +1,86 @@
 <template>
   <div id="app" class="wrapper">
     <h1 class="title">TODO LIST</h1>
-    <div class="input__container">
-      <v-text-field
-        label="What to do?"
-        v-model="newTodo"
-        :rules="rules"
-        append-icon="mdi-plus"
-        @click:append="addTodo"
-      ></v-text-field>
-      <p>Totally {{ filteredItemsCount }} items found.</p>
-    </div>
+    <p>
+      <v-select
+        :items="[
+          { text: $t('lang.en'), value: 'en' },
+          { text: $t('lang.ru'), value: 'ru' },
+        ]"
+        @input="onChangeLocale"
+        v-model="locale"
+      />
+    </p>
+    <CreateField
+      :filteredItemsCount="filteredItemsCount"
+      @addTodo="addTodoRequest"
+      v-model="query"
+      class="input__create"
+    />
     <ul class="todos__wrapper">
-      <li v-for="todo in shownItems" :key="todo.id" class="todo__container">
-        <div class="todo__row">
-          <v-checkbox
-            color="indigo"
-            hide-details
-            v-show="editableTodo !== todo.id"
-            v-model="todo.completed"
-            @click="completeTask(todo.id, todo.completed)"
-            class="v-checkbox"
-          ></v-checkbox>
-          <v-text-field
-            v-if="editableTodo === todo.id"
-            v-model="newEditableTodo"
-            :rules="rules"
-          ></v-text-field>
-          <p
-            v-else
-            class="todo__content"
-            :class="{ completed: todo.completed }"
-          >
-            {{ todo.title }}
-          </p>
-        </div>
-
-        <div class="button__wrapper">
-          <v-btn
-            icon
-            @click="
-              editableTodo === todo.id
-                ? saveEditedTodo(newEditableTodo, todo.id)
-                : editTodo(todo)
-            "
-          >
-            <v-icon>{{
-              editableTodo === todo.id ? 'mdi-pencil' : 'mdi-check'
-            }}</v-icon>
-          </v-btn>
-          <v-btn icon @click="removeTodo(todo.id)">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </div>
-      </li>
+      <transition-group name="fade-transition">
+        <TodoItem
+          is="TodoItem"
+          v-for="todo in shownItems"
+          :key="todo.id"
+          :todo="todo"
+          class="todo__container"
+        >
+          <template v-slot:urgent="{ todo }">
+            <p
+              :class="{
+                urgent: todo.title.toLowerCase().includes('urgent'),
+                completed: todo.completed,
+                todo__content: true,
+              }"
+            >
+              {{ todo.title }}
+            </p>
+          </template>
+        </TodoItem>
+      </transition-group>
     </ul>
-    <v-pagination v-model="page" :length="pageSize" circle></v-pagination>
+    <Pagination v-model="page" :pageCount="pageSize" />
   </div>
 </template>
 
 <script>
-import { getAll, addToDo, deleteToDo, editToDo, completeToDo } from './api';
+import { mapGetters, mapActions } from 'vuex';
+import TodoItem from './components/TodoItem';
+import CreateField from './components/CreateField';
+import Pagination from './components/Pagination';
+
 const PAGE_SIZE = 20;
 export default {
   name: 'App',
   data() {
     return {
-      items: [],
-      rules: [(value) => !!value || 'Required.'],
-      newTodo: '',
+      query: '',
       editableTodo: null,
-      newEditableTodo: '',
       page: 0,
+      locale: this.$i18n.locale,
     };
+  },
+  components: {
+    TodoItem,
+    CreateField,
+    Pagination,
   },
 
   computed: {
+    ...mapGetters(['todosList']),
     filteredItemsCount() {
-      return this.filteredItems.length;
+      return this.filteredItems?.length;
     },
     itemsCount() {
-      return this.items.length;
+      return this.todosList?.length;
     },
     pageSize() {
       return Math.ceil(this.filteredItemsCount / PAGE_SIZE) - 1;
     },
     filteredItems() {
-      return this.items.filter((item) =>
-        item.title.toLowerCase().includes(this.newTodo.toLowerCase())
+      return this.todosList?.filter((item) =>
+        item.title.toLowerCase().includes(this.query.toLowerCase())
       );
     },
     shownItems() {
@@ -103,47 +96,22 @@ export default {
   },
 
   methods: {
-    async addTodo() {
-      const newTodo = this.newTodo && this.newTodo.trim();
-      if (!newTodo) {
+    ...mapActions(['loadTodos', 'addTodo', 'updateTodo', 'removeTodo']),
+    async addTodoRequest(newTodo) {
+      const transformedNewTodo = newTodo?.trim();
+      if (!transformedNewTodo) {
         return;
       }
-      const createdToDo = await addToDo(newTodo);
-      this.newTodo = '';
-      this.items = [createdToDo, ...this.items];
+      this.addTodo({ newTodo });
+      this.query = '';
     },
-
-    async removeTodo(todoId) {
-      await deleteToDo(todoId);
-      this.items = this.items.filter(({ id }) => id !== todoId);
-    },
-
-    editTodo({ id, title }) {
-      this.editableTodo = id;
-      this.newEditableTodo = title;
-    },
-
-    async saveEditedTodo(title, id) {
-      if (!title) {
-        this.removeTodo(id);
-      }
-      const editedTodo = await editToDo(title, id);
-      this.items = this.items.filter((todo) =>
-        todo.id !== id ? todo : editedTodo
-      );
-      this.editableTodo = null;
-    },
-
-    async completeTask(id, isCompleted) {
-      const editedTodo = await completeToDo(id, isCompleted);
-      this.items = this.items.filter((todo) =>
-        todo.id !== id ? todo : editedTodo
-      );
+    onChangeLocale() {
+      this.$i18n.locale = this.locale;
     },
   },
 
-  async mounted() {
-    this.items = await getAll();
+  mounted() {
+    this.loadTodos();
   },
 };
 </script>
@@ -158,8 +126,8 @@ export default {
   margin: 70px auto 30px;
 }
 
-.input__container {
-  margin-bottom: 30px;
+.input__create {
+  flex-grow: 0.6;
 }
 
 .todos__wrapper {
@@ -172,32 +140,31 @@ export default {
   padding: 4px 0;
   border-bottom: 1px solid #80808024;
 }
+
 .todo__container:last-child {
   border-bottom: none;
 }
 
-.todo__row {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
 .todo__content {
   margin-left: 10px;
+  margin-bottom: 0;
 }
 
 .completed {
   text-decoration: line-through;
 }
 
-.button__wrapper {
-  width: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.urgent {
+  color: red;
 }
 
-.v-checkbox {
-  margin-top: 0;
+.fade-transition-enter-active,
+.fade-transition-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-transition-enter,
+.fade-transition-leave-to {
+  opacity: 0;
 }
 </style>
