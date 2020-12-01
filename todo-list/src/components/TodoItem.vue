@@ -1,42 +1,38 @@
 <template>
   <li>
     <div class="todo__row">
-      <input
-        type="checkbox"
+      <v-checkbox
+        color="indigo"
+        hide-details
         v-show="editableTodo !== todo.id"
         v-model="todo.completed"
         @click="completeTodo({ id: todo.id, isCompleted: todo.completed })"
-      />
-      <input
-        type="text"
-        class="d-block w-100"
+        class="v-checkbox"
+      ></v-checkbox>
+      <v-text-field
         v-if="editableTodo === todo.id"
         v-model="newEditableTodo"
-      />
+        :rules="rules"
+      ></v-text-field>
       <slot v-else name="urgent" :todo="todo"> </slot>
     </div>
 
     <div class="button__wrapper">
-      <button
-        type="button"
-        class="button"
+      <v-btn
+        icon
         @click="
           editableTodo === todo.id
             ? onSaveEditedTodo(newEditableTodo, todo.id)
             : onEditTodo()
         "
       >
-        <img
-          src="../assets/save.png"
-          alt="save"
-          width="20"
-          v-if="editableTodo === todo.id"
-        />
-        <img src="../assets/edit.png" alt="edit" width="20" v-else />
-      </button>
-      <button type="button" class="button" @click="removeTodo(todo.id)">
-        <img src="../assets/delete.png" alt="trash" width="20" />
-      </button>
+        <v-icon>{{
+          editableTodo === todo.id ? 'mdi-pencil' : 'mdi-check'
+        }}</v-icon>
+      </v-btn>
+      <v-btn icon @click="removeTodo(todo.id)">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </div>
   </li>
 </template>
@@ -86,7 +82,7 @@ export default {
   align-items: center;
 }
 
-.button:focus {
-  outline: none;
+.v-checkbox {
+  margin-top: 0;
 }
 </style>

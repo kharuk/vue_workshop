@@ -7,5 +7,9 @@
   "lang": {
     "en": "English",
     "ru": "Russian"
+  },
+  "form": {
+    "required": "Required",
+    "newTodoPlaceholder": "What to do?"
   }
 }

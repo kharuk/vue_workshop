@@ -1,19 +1,14 @@
 <template>
   <div class="field__wrapper">
     <div class="input__container">
-      <input
-        type="text"
-        class="input"
+      <v-text-field
+        :label="$t('form.newTodoPlaceholder')"
         v-model="newTodo"
         @input="$emit('input', newTodo)"
-      />
-      <img
-        src="../assets/add.png"
-        alt="add"
-        width="20"
-        height="25"
-        @click="addTodo"
-      />
+        :rules="rules"
+        append-icon="mdi-plus"
+        @click:append="addTodo"
+      ></v-text-field>
     </div>
     <p>
       {{ $t('app.foundItems') }} {{ filteredItemsCount }}
@@ -29,6 +24,7 @@ export default {
   data() {
     return {
       newTodo: '',
+      rules: [(value) => !!value || "$t('form.required')"],
     };
   },
   watch: {
