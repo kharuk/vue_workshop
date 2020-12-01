@@ -3,7 +3,7 @@
     <div class="input__container">
       <input
         type="text"
-        class="input w-100 d-block"
+        class="input"
         v-model="newTodo"
         @input="$emit('input', newTodo)"
       />
@@ -15,7 +15,10 @@
         @click="addTodo"
       />
     </div>
-    <p>Totally {{ filteredItemsCount }} items found.</p>
+    <p>
+      {{ $t('app.foundItems') }} {{ filteredItemsCount }}
+      {{ $tc('app.items', filteredItemsCount) }}
+    </p>
   </div>
 </template>
 
@@ -55,6 +58,8 @@ export default {
 .input {
   border-bottom: 1px solid #808080bd;
   margin-bottom: 10px;
+  width: 100%;
+  padding: 5px;
 }
 
 .input:focus {

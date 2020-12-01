@@ -1,6 +1,16 @@
 <template>
   <div id="app" class="wrapper">
     <h1 class="title">TODO LIST</h1>
+    <p>
+      <v-select
+        :items="[
+          { text: $t('lang.en'), value: 'en' },
+          { text: $t('lang.ru'), value: 'ru' },
+        ]"
+        @input="onChangeLocale"
+        v-model="locale"
+      />
+    </p>
     <CreateField
       :filteredItemsCount="filteredItemsCount"
       @addTodo="addTodoRequest"
@@ -48,6 +58,7 @@ export default {
       query: '',
       editableTodo: null,
       page: 0,
+      locale: this.$i18n.locale,
     };
   },
   components: {
@@ -93,6 +104,9 @@ export default {
       }
       this.addTodo({ newTodo });
       this.query = '';
+    },
+    onChangeLocale() {
+      this.$i18n.locale = this.locale;
     },
   },
 
