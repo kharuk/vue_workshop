@@ -5,7 +5,7 @@
         type="checkbox"
         v-show="editableTodo !== todo.id"
         v-model="todo.completed"
-        @click="onCompleteTask(todo.id, todo.completed)"
+        @click="completeTodo({ id: todo.id, isCompleted: todo.completed })"
       />
       <input
         type="text"
@@ -34,7 +34,7 @@
         />
         <img src="../assets/edit.png" alt="edit" width="20" v-else />
       </button>
-      <button type="button" class="button" @click="onRemoveTodo(todo.id)">
+      <button type="button" class="button" @click="removeTodo(todo.id)">
         <img src="../assets/delete.png" alt="trash" width="20" />
       </button>
     </div>
@@ -42,27 +42,31 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'TodoItem',
-  props: ['todo', 'editableTodo'],
+  props: ['todo'],
   data() {
     return {
       newEditableTodo: '',
     };
   },
+  computed: {
+    ...mapGetters(['editableTodo']),
+  },
   methods: {
-    onCompleteTask(id, completed) {
-      this.$emit('completeTodo', { id, completed });
-    },
-    onRemoveTodo(id) {
-      this.$emit('removeTodo', id);
-    },
+    ...mapActions(['removeTodo', 'completeTodo', 'updateTodo', 'editTodo']),
     onEditTodo() {
       this.newEditableTodo = this.todo?.title;
-      this.$emit('editTodo', this.todo?.id);
+      this.editTodo(this.todo?.id);
     },
     onSaveEditedTodo(newEditableTodo, todoId) {
-      this.$emit('saveEditedTodo', { newEditableTodo, todoId });
+      if (!newEditableTodo) {
+        this.removeTodo(todoId);
+      }
+      this.updateTodo({ title: newEditableTodo, id: todoId });
+      this.editTodo(null);
     },
   },
 };

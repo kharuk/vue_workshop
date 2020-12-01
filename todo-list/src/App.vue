@@ -3,7 +3,7 @@
     <h1 class="title">TODO LIST</h1>
     <CreateField
       :filteredItemsCount="filteredItemsCount"
-      @addTodo="addTodo"
+      @addTodo="addTodoRequest"
       v-model="query"
       class="input__create"
     />
@@ -14,12 +14,7 @@
           v-for="todo in shownItems"
           :key="todo.id"
           :todo="todo"
-          :editableTodo="editableTodo"
           class="todo__container"
-          @removeTodo="removeTodo"
-          @completeTodo="completeTask"
-          @editTodo="editTodo"
-          @saveEditedTodo="saveEditedTodo"
         >
           <template v-slot:urgent="{ todo }">
             <p
@@ -40,7 +35,7 @@
 </template>
 
 <script>
-import { getAll, addToDo, deleteToDo, editToDo, completeToDo } from './api';
+import { mapGetters, mapActions } from 'vuex';
 import TodoItem from './components/TodoItem';
 import CreateField from './components/CreateField';
 import Pagination from './components/Pagination';
@@ -50,10 +45,8 @@ export default {
   name: 'App',
   data() {
     return {
-      items: [],
       query: '',
       editableTodo: null,
-      newEditableTodo: '',
       page: 0,
     };
   },
@@ -64,17 +57,18 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['todosList']),
     filteredItemsCount() {
-      return this.filteredItems.length;
+      return this.filteredItems?.length;
     },
     itemsCount() {
-      return this.items.length;
+      return this.todosList?.length;
     },
     pageSize() {
       return Math.ceil(this.filteredItemsCount / PAGE_SIZE) - 1;
     },
     filteredItems() {
-      return this.items.filter((item) =>
+      return this.todosList?.filter((item) =>
         item.title.toLowerCase().includes(this.query.toLowerCase())
       );
     },
@@ -91,46 +85,19 @@ export default {
   },
 
   methods: {
-    async addTodo(newTodo) {
+    ...mapActions(['loadTodos', 'addTodo', 'updateTodo', 'removeTodo']),
+    async addTodoRequest(newTodo) {
       const transformedNewTodo = newTodo?.trim();
       if (!transformedNewTodo) {
         return;
       }
-      const createdToDo = await addToDo(transformedNewTodo);
+      this.addTodo({ newTodo });
       this.query = '';
-      this.items = [createdToDo, ...this.items];
-    },
-
-    async removeTodo(todoId) {
-      await deleteToDo(todoId);
-      this.items = this.items.filter(({ id }) => id !== todoId);
-    },
-
-    editTodo(id) {
-      this.editableTodo = id;
-    },
-
-    async saveEditedTodo({ newEditableTodo: title, todoId: id }) {
-      if (!title) {
-        this.removeTodo(id);
-      }
-      const editedTodo = await editToDo(title, id);
-      this.items = this.items.map((todo) =>
-        todo.id !== id ? todo : editedTodo
-      );
-      this.editableTodo = null;
-    },
-
-    async completeTask(id, isCompleted) {
-      const editedTodo = await completeToDo(id, isCompleted);
-      this.items = this.items.filter((todo) =>
-        todo.id !== id ? todo : editedTodo
-      );
     },
   },
 
-  async mounted() {
-    this.items = await getAll();
+  mounted() {
+    this.loadTodos();
   },
 };
 </script>
