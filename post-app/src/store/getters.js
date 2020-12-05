@@ -1,17 +1,17 @@
 export default {
-
-  tickersAvailable(state) {
-    return state.currentTickers !== null;
+  posts(state) {
+    return state.posts;
   },
-
-  currentTickers(state) {
-    if (!state.currentTickers) {
-      return [];
-    }
-    return (state.currentTickers.tickers || []).map(({base, target, volume, last}) => ({base, target, volume, last}))
+  /*   postById: (state) => (id) => {
+    return state.posts.find((post) => post.id === Number(id));
+  }, */
+  post(state) {
+    return state.post;
   },
-
-  coinsList(state) {
-    return state.coins.slice(400, 900);
-  }
-}
+  editablePost(state) {
+    return state.editingPost;
+  },
+  comments(state) {
+    return state.comments;
+  },
+};

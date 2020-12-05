@@ -1,26 +1,41 @@
+import * as Api from '../api';
+
 export default {
-  loadCoins(ctx) {
-    fetch(`https://api.coingecko.com/api/v3/coins/list`)
-      .then((res) => res.json())
-      .then((list) => {
-        ctx.commit('setCoinsList', list)
-      })
+  async loadPosts(ctx) {
+    const list = await Api.getPosts();
+    ctx.commit('setPosts', list);
   },
 
-  loadMore(ctx, {id}) {
-    return fetch(`https://api.coingecko.com/api/v3/coins/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        ctx.commit('setCoinData', {id, data});
-        return data;
-      })
+  async loadPostById(ctx, id) {
+    const post = await Api.getPostById(id);
+    ctx.commit('setPost', post);
   },
 
-  showTickers(ctx, {id}) {
-    fetch(`https://api.coingecko.com/api/v3/coins/${id}/tickers`)
-      .then((res) => res.json())
-      .then((data) => {
-        ctx.commit('setCurrentTickers', data)
-      })
-  }
-}
+  async addPost(ctx, { title, body }) {
+    const createdPost = await Api.addPost({ title, body });
+    ctx.commit('addPost', createdPost);
+  },
+
+  async removePost(ctx, id) {
+    await Api.removePost(id);
+    ctx.commit('removePost', id);
+  },
+
+  async updatePost(ctx, { title, body, id }) {
+    const updatedPost = await Api.editPost({ title, body, id });
+    ctx.commit('updatePost', { updatedPost, id });
+  },
+
+  setEditMode(ctx, id) {
+    ctx.commit('editingPost', id);
+  },
+
+  async loadCommentsForPost(ctx, postId) {
+    const comments = await Api.getCommentsByPostId(postId);
+    ctx.commit('setComments', comments);
+  },
+
+  restPost(ctx) {
+    ctx.commit('restPost');
+  },
+};

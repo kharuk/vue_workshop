@@ -1,13 +1,17 @@
 
 {
   "app": {
-    "name": "I18n app",
+    "name": "Post share",
+    "about": "",
     "foundItems": "Totally found:",
     "items": "item | items"
   },
   "lang": {
     "en": "English",
     "ru": "Russian"
+  },
+  "posts": {
+    "details": "Details"
   },
   "form": {
     "required": "Required",
