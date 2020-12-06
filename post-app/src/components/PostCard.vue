@@ -1,59 +1,62 @@
 <template>
-  <v-card>
-    <v-card-title class="d-block">
-      <h4 class="text-center title">{{ item.title }}</h4>
-    </v-card-title>
+  <transition name="fade">
+    <v-card class="mx-auto">
+      <v-img class="white--text align-end" height="200px" :src="img">
+        <v-card-title>{{ item.title }}</v-card-title>
+      </v-img>
+      <PostActions :id="item.id" class="action-bar" />
+      <v-card-subtitle class="pb-0">
+        {{ item.createdOn | formatDate }}
+      </v-card-subtitle>
+      <v-card-text class="text--primary">
+        <p class="text_dot">{{ item.body }}</p>
+      </v-card-text>
+      <v-card-actions>
+        <v-list-item class="grow list__wrapper">
+          <router-link :to="`/posts/${item.id}`">
+            <v-btn text color="teal accent-4" class="details__button">{{
+              $t("posts.details")
+            }}</v-btn>
+          </router-link>
 
-    <v-card-text>
-      <p class="text_dot">{{ item.body }}</p>
-    </v-card-text>
-    <v-card-actions>
-      <router-link :to="`/posts/${item.id}`">
-        <v-btn text color="teal accent-4">{{ $t("posts.details") }}</v-btn>
-      </router-link>
-    </v-card-actions>
-    <!--  <v-text-field v-model="query" />
-    <v-row class="users-list">
-      <v-col cols="2" v-for="user in visibleList" :key="user.id">
-        <v-card>
-          <v-card-title>
-            <h4>{{ user.name }}  </h4>
-          </v-card-title>
-          <v-card-subtitle>
-            <p><small> {{user.jobTitle}}</small></p>
-          </v-card-subtitle>
-          <v-card-actions>
-            <router-link :to="`/users/${user.id}`">
-              <v-btn text>Details</v-btn>
-            </router-link>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row> -->
-  </v-card>
+          <v-row align="center" justify="end">
+            <PostStatistics :post="item" />
+          </v-row>
+        </v-list-item>
+      </v-card-actions>
+    </v-card>
+  </transition>
 </template>
 
 <script>
+import moment from "moment";
+import PostActions from "./PostActions";
+import PostStatistics from "./PostStatistics";
+
+const DEFAULT_IMG = "https://cdn.vuetifyjs.com/images/cards/docks.jpg";
 export default {
   name: "PostCard",
   props: {
     item: Object,
   },
+  components: {
+    PostActions,
+    PostStatistics,
+  },
+  computed: {
+    img() {
+      return this.item.imgUrl || DEFAULT_IMG;
+    },
+  },
+  filters: {
+    formatDate(val) {
+      if (!val) {
+        return "-";
+      }
+
+      let date = val.toDate();
+      return moment(date).fromNow();
+    },
+  },
 };
 </script>
-<style>
-.text_dot {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-}
-
-.title {
-  line-height: 26px;
-}
-
-a {
-  text-decoration: none;
-}
-</style>

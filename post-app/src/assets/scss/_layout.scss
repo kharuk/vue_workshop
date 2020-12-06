@@ -1,0 +1,84 @@
+.p-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba($dark, 0.4);
+  z-index: 999;
+
+  .p-container {
+    position: fixed;
+    max-width: 600px;
+    top: 2vh;
+    min-height: 300px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 3px;
+    background: $white;
+    box-shadow: 0 0 20px 0 rgba($dark, 0.5);
+    overflow: auto;
+
+    .close {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      padding: 5px;
+    }
+
+    .form__wrapper {
+      padding-top: 24px;
+    }
+  }
+}
+
+.field__wrapper {
+  margin-bottom: 30px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 20px;
+  align-items: stretch;
+}
+.pagination__wrapper {
+  margin-top: 30px;
+}
+
+.text_dot {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.title {
+  line-height: 26px;
+}
+
+.action__panel {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  width: 100px;
+}
+
+.action-bar {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.details__button {
+  padding: 0 8px !important;
+}
+
+.list__wrapper {
+  padding-left: 0;
+}

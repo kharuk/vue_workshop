@@ -3,4 +3,6 @@ export default {
   post: null,
   comments: [],
   editingPost: null,
+  isOpen: false,
+  userProfile: null,
 };

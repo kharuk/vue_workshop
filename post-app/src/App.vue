@@ -8,21 +8,35 @@
         </v-col>
       </v-row>
     </v-container>
+    <PostModal :showPostModal="isModalOpen" @closePostModal="closeModal" />
   </v-app>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Menu from "./components/Menu";
+import PostModal from "./components/PostModal";
 
 export default {
   name: "App",
 
   components: {
     Menu,
+    PostModal,
   },
 
   data: () => ({
     //
   }),
+  computed: {
+    ...mapGetters(["isModalOpen"]),
+  },
+  methods: {
+    ...mapActions(["sesModalMode"]),
+
+    closeModal() {
+      this.sesModalMode(false);
+    },
+  },
 };
 </script>

@@ -11,10 +11,21 @@
     "ru": "Russian"
   },
   "posts": {
-    "details": "Details"
+    "details": "Details",
+    "create": "New",
+    "close": "Close"
   },
   "form": {
     "required": "Required",
-    "newTodoPlaceholder": "What to do?"
+    "label": {
+      "title": "Title",
+      "body": "Content",
+      "imgUrl": "Image URL",
+      "search": "Search"
+    },
+    "submit": "Submit",
+    "validation": {
+      "required": "can not be empty"
+    }
   }
 }

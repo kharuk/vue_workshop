@@ -2,12 +2,14 @@
   <v-card class="mx-auto" v-if="post">
     <v-card-title class="d-block">
       <h4 class="text-center title">{{ post.title }}</h4>
+      <v-spacer></v-spacer>
+      <PostActions :id="post.id" :hasRedirect="true" />
     </v-card-title>
 
     <v-card-text>
       <p>{{ post.body }}</p>
     </v-card-text>
-    <v-list three-line>
+    <v-list two-line>
       <template v-for="(comment, index) in comments">
         <CommentInfo
           :comment="comment"
@@ -22,6 +24,7 @@
 <script>
 import { mapGetters } from "vuex";
 import CommentInfo from "./CommentInfo";
+import PostActions from "./PostActions";
 
 export default {
   name: "PostItem",
@@ -30,11 +33,10 @@ export default {
   },
   components: {
     CommentInfo,
+    PostActions,
   },
   computed: {
     ...mapGetters(["comments", "post"]),
   },
 };
 </script>
-<style>
-</style>

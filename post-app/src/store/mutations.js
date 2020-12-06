@@ -17,10 +17,13 @@ export default {
 
   updatePost(state, { updatedPost, id }) {
     state.posts = state.posts.map((post) => (post.id !== id ? post : updatedPost));
+    if (state.post?.id === id) {
+      state.post = updatedPost;
+    }
   },
 
   editingPost(state, postId) {
-    state.editingPost = postId;
+    state.editingPost = state.posts.find((post) => post.id === postId);
   },
 
   setComments(state, comments) {
@@ -30,5 +33,19 @@ export default {
   restPost(state) {
     state.comments = [];
     state.post = null;
+  },
+
+  setIsOpen(state, isOpen) {
+    state.isOpen = isOpen;
+  },
+
+  updateLikes(state, { id, likesCount }) {
+    state.posts = state.posts.map((post) =>
+      post.id !== id ? post : { ...post, likes: likesCount }
+    );
+  },
+
+  setUserProfile(state, userProfile) {
+    state.userProfile = userProfile;
   },
 };
