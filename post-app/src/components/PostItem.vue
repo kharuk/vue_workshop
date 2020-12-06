@@ -1,14 +1,14 @@
 <template>
-  <v-card class="mx-auto" v-if="post">
-    <v-card-title class="d-block">
-      <h4 class="text-center title">{{ post.title }}</h4>
-      <v-spacer></v-spacer>
-      <PostActions :id="post.id" :hasRedirect="true" />
-    </v-card-title>
-
-    <v-card-text>
-      <p>{{ post.body }}</p>
-    </v-card-text>
+  <v-card class="mx-auto card__item" v-if="post">
+    <PostInfo :item="post" />
+    <v-divider></v-divider>
+    <div class="statistics__wrapper">
+      <PostStatistics :post="post" />
+    </div>
+    <p class="comments__title">{{ $t("posts.comments") }}</p>
+    <div class="comment-new__wrapper">
+      <CommentCreation :postId="post.id" />
+    </div>
     <v-list two-line>
       <template v-for="(comment, index) in comments">
         <CommentInfo
@@ -24,7 +24,9 @@
 <script>
 import { mapGetters } from "vuex";
 import CommentInfo from "./CommentInfo";
-import PostActions from "./PostActions";
+import PostInfo from "./PostInfo";
+import PostStatistics from "./PostStatistics";
+import CommentCreation from "./CommentCreation";
 
 export default {
   name: "PostItem",
@@ -33,7 +35,9 @@ export default {
   },
   components: {
     CommentInfo,
-    PostActions,
+    PostInfo,
+    PostStatistics,
+    CommentCreation,
   },
   computed: {
     ...mapGetters(["comments", "post"]),

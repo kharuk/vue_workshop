@@ -5,4 +5,5 @@ export default {
   editingPost: null,
   isOpen: false,
   userProfile: null,
+  isLiked: {},
 };

@@ -4,7 +4,7 @@ import VueI18n from 'vue-i18n';
 import VueRouter from 'vue-router';
 
 import vuetify from './plugins/vuetify';
-import store from './store/index';
+import storeConfig from './store/index';
 import { auth } from './firebase';
 
 import en from './i18n/en.json';
@@ -73,7 +73,7 @@ auth.onAuthStateChanged(() => {
     app = new Vue({
       vuetify,
       i18n,
-      store: new Vuex.Store(store),
+      store: new Vuex.Store(storeConfig),
       router,
       render: (h) => h(App),
     }).$mount('#app');

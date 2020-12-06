@@ -13,7 +13,8 @@
   "posts": {
     "details": "Details",
     "create": "New",
-    "close": "Close"
+    "close": "Close",
+    "comments": "Comments"
   },
   "form": {
     "required": "Required",
@@ -21,7 +22,8 @@
       "title": "Title",
       "body": "Content",
       "imgUrl": "Image URL",
-      "search": "Search"
+      "search": "Search",
+      "newComment": "Add your comment"
     },
     "submit": "Submit",
     "validation": {

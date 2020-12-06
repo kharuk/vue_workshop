@@ -17,4 +17,10 @@ export default {
   comments(state) {
     return state.comments;
   },
+  isPostLiked: (state) => (postId) => {
+    return state.isLiked[postId];
+  },
+  userProfile(state) {
+    return state.userProfile;
+  },
 };

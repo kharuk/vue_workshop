@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-container fluid class="pa-0">
-      <v-row no-gutters>
+    <v-container fluid class="pa-0 page__container">
+      <v-row no-gutters class="page__container">
         <v-col cols="2"><Menu /></v-col>
         <v-col cols="10" class="pa-3">
           <router-view></router-view>

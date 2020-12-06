@@ -52,6 +52,11 @@ export default {
     ctx.commit('updateLikes', { id, likesCount });
   },
 
+  async addComment(ctx, { postId, comment }) {
+    const { createdComment, commentsCount } = await Api.addComment({ postId, comment });
+    ctx.commit('updateComments', { createdComment, commentsCount, postId });
+  },
+
   async login(ctx, form) {
     const { user } = await Api.login(form);
     ctx.dispatch('fetchUserProfile', user);
@@ -63,9 +68,8 @@ export default {
   },
 
   async fetchUserProfile(ctx, user) {
-    const userProfile = await Api.fetchUserProfile(user);
-    console.log('userProfile', userProfile);
-    ctx.commit('setUserProfile', userProfile.data());
+    const userProfile = await Api.fetchUserProfile(user.uid);
+    ctx.commit('setUserProfile', userProfile);
     if (router.currentRoute.path === '/login') {
       router.push('/');
     }

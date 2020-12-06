@@ -83,6 +83,35 @@ export const getCommentsByPostId = async (id) => {
   return comments;
 };
 
+export const addComment = async ({ postId, comment }) => {
+  let commentId;
+  const user = await fetchUserProfile(fb.auth.currentUser.uid);
+  const createdComment = await fb.commentsCollection
+    .add({
+      createdOn: new Date(),
+      content: comment,
+      postId: postId,
+      userId: fb.auth.currentUser.uid,
+      userName: user.name,
+    })
+    .then((docRef) => {
+      commentId = docRef.id;
+      return docRef.get();
+    })
+    .then((doc) => {
+      const comment = doc.data();
+      comment.id = commentId;
+      return comment;
+    });
+  const post = await getPostById(postId);
+  await fb.postsCollection.doc(postId).update({
+    comments: parseInt(post.comments) + 1,
+  });
+
+  const updatedPost = await getPostById(postId);
+  return { createdComment, commentsCount: updatedPost.comments };
+};
+
 export const likePost = async ({ id, likes }) => {
   const userId = fb.auth.currentUser.uid;
   const docId = `${userId}_${id}`;
@@ -93,16 +122,16 @@ export const likePost = async ({ id, likes }) => {
     await fb.postsCollection.doc(id).update({
       likes: likes - 1,
     });
-    return;
-  }
-  await fb.likesCollection.doc(docId).set({
-    postId: id,
-    userId: userId,
-  });
+  } else {
+    await fb.likesCollection.doc(docId).set({
+      postId: id,
+      userId: userId,
+    });
 
-  await fb.postsCollection.doc(id).update({
-    likes: likes + 1,
-  });
+    await fb.postsCollection.doc(id).update({
+      likes: likes + 1,
+    });
+  }
 
   const updatedPost = await getPostById(id);
   return updatedPost.likes;
@@ -121,8 +150,11 @@ export const signup = async (form) => {
   return user;
 };
 
-export const fetchUserProfile = (user) => {
-  return fb.usersCollection.doc(user.uid).get();
+export const fetchUserProfile = (id) => {
+  return fb.usersCollection
+    .doc(id)
+    .get()
+    .then((doc) => doc.data());
 };
 
 export const logout = () => {

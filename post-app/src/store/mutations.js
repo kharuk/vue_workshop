@@ -43,9 +43,28 @@ export default {
     state.posts = state.posts.map((post) =>
       post.id !== id ? post : { ...post, likes: likesCount }
     );
+    if (state.isLiked[id]) {
+      state.isLiked[id] = !state.isLiked[id];
+    } else {
+      state.isLiked[id] = true;
+    }
+    if (state.post?.id === id) {
+      state.post = { ...state.post, likes: likesCount };
+    }
   },
 
   setUserProfile(state, userProfile) {
     state.userProfile = userProfile;
+  },
+
+  updateComments(state, { createdComment, commentsCount, postId }) {
+    state.comments = [createdComment, ...state.comments];
+    state.posts = state.posts.map((post) =>
+      post.id !== postId ? post : { ...post, comments: commentsCount }
+    );
+
+    if (state.post?.id === postId) {
+      state.post = { ...state.post, comments: commentsCount };
+    }
   },
 };
