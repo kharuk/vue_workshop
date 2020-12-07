@@ -16,6 +16,11 @@
     "close": "Close",
     "comments": "Comments"
   },
+  "login": {
+    "signupLink": "Create an account",
+    "loginLink": "Back to Login",
+    "error": "Invalid login or password"
+  },
   "form": {
     "required": "Required",
     "label": {
@@ -23,9 +28,15 @@
       "body": "Content",
       "imgUrl": "Image URL",
       "search": "Search",
-      "newComment": "Add your comment"
+      "newComment": "Add your comment",
+      "email": "Email",
+      "password": "Password",
+      "name": "Name"
     },
     "submit": "Submit",
+    "login": "Login",
+    "signup": "Signup",
+    "filter": "What fields to find?",
     "validation": {
       "required": "can not be empty"
     }

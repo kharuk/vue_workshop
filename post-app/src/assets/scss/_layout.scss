@@ -36,6 +36,16 @@
 
 .field__wrapper {
   margin-bottom: 30px;
+  width: 50%;
+  &:first-child {
+    margin-right: 30px;
+  }
+  @media (max-width: 900px) {
+    width: 100%;
+    &:first-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .wrapper {
@@ -107,5 +117,31 @@
   max-width: 50%;
   @media (max-width: 900px) {
     max-width: 100%;
+  }
+}
+
+.button__wrapper {
+  display: flex;
+}
+
+.login__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth__container {
+  margin-top: 70px;
+  padding: 30px;
+}
+
+.errorMessage {
+  color: $error;
+}
+
+.panel__wrapper {
+  display: flex;
+  width: 100%;
+  @media (max-width: 900px) {
+    flex-direction: column;
   }
 }

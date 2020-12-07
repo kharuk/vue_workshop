@@ -1,3 +1,4 @@
+import { filterOptions } from '../constants/filterOptions';
 export default {
   posts: [],
   post: null,
@@ -6,4 +7,6 @@ export default {
   isOpen: false,
   userProfile: null,
   isLiked: {},
+  loginError: false,
+  filter: filterOptions.ALL,
 };

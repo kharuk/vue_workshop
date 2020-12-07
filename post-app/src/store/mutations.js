@@ -67,4 +67,16 @@ export default {
       state.post = { ...state.post, comments: commentsCount };
     }
   },
+
+  loginError(state, { isError }) {
+    state.loginError = isError;
+  },
+
+  resetErrors(state) {
+    state.loginError = false;
+  },
+
+  setFilter(state, filter) {
+    state.filter = filter;
+  },
 };

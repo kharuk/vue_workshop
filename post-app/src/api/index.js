@@ -29,8 +29,9 @@ export const getPostById = (id) => {
     });
 };
 
-export const addPost = ({ title, body, imgUrl }) => {
+export const addPost = async ({ title, body, imgUrl }) => {
   let postId;
+  const user = await fetchUserProfile(fb.auth.currentUser.uid);
   return fb.postsCollection
     .add({
       createdOn: new Date(),
@@ -40,6 +41,7 @@ export const addPost = ({ title, body, imgUrl }) => {
       comments: 0,
       likes: 0,
       userId: fb.auth.currentUser.uid,
+      userName: user.name,
     })
     .then((docRef) => {
       postId = docRef.id;
@@ -145,7 +147,6 @@ export const signup = async (form) => {
   const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password);
   await fb.usersCollection.doc(user.uid).set({
     name: form.name,
-    title: form.title,
   });
   return user;
 };

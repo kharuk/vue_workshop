@@ -6,7 +6,10 @@
         $t("posts.create")
       }}</v-btn>
     </div>
-    <SearchField v-model="query" />
+    <div class="panel__wrapper">
+      <SearchField v-model="query" />
+      <SelectField />
+    </div>
     <PostList :query="query" />
   </div>
 </template>
@@ -15,10 +18,11 @@
 import { mapActions } from "vuex";
 import PostList from "../PostList";
 import SearchField from "../SearchField";
+import SelectField from "../SelectField";
 
 export default {
   name: "Posts",
-  components: { PostList, SearchField },
+  components: { PostList, SearchField, SelectField },
   data() {
     return {
       query: "",

@@ -1,5 +1,12 @@
+import { filterOptions } from '../constants/filterOptions';
+import { auth } from '../firebase';
+
 export default {
   posts(state) {
+    if (state.filter === filterOptions.MY_POSTS) {
+      const authUserId = auth.currentUser.uid;
+      return state.posts?.filter((post) => post.userId === authUserId);
+    }
     return state.posts;
   },
   postById: (state) => (id) => {
@@ -22,5 +29,8 @@ export default {
   },
   userProfile(state) {
     return state.userProfile;
+  },
+  isLoginError(state) {
+    return state.loginError;
   },
 };

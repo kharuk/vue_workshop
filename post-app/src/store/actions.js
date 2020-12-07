@@ -58,8 +58,13 @@ export default {
   },
 
   async login(ctx, form) {
-    const { user } = await Api.login(form);
-    ctx.dispatch('fetchUserProfile', user);
+    try {
+      const { user } = await Api.login(form);
+      ctx.dispatch('fetchUserProfile', user);
+      ctx.commit('loginError', { isError: false });
+    } catch {
+      ctx.commit('loginError', { isError: true });
+    }
   },
 
   async signup(ctx, form) {
@@ -79,5 +84,13 @@ export default {
     await Api.logout();
     ctx.commit('setUserProfile', {});
     router.push('/login');
+  },
+
+  resetErrors(ctx) {
+    ctx.commit('resetErrors');
+  },
+
+  setFilter(ctx, filter) {
+    ctx.commit('setFilter', filter);
   },
 };

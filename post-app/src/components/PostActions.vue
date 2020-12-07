@@ -18,6 +18,7 @@ export default {
     id: String,
     hasRedirect: Boolean,
   },
+
   methods: {
     ...mapActions(["removePost", "setEditMode", "sesModalMode"]),
     removePostRequest() {

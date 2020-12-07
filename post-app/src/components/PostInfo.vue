@@ -7,7 +7,7 @@
     >
       <v-card-title>{{ item.title }}</v-card-title>
     </v-img>
-    <PostActions :id="item.id" class="action-bar" />
+    <PostActions v-if="isAuthUser" :id="item.id" class="action-bar" />
     <v-card-subtitle class="pb-0">
       {{ item.createdOn | formatDate }}
     </v-card-subtitle>
@@ -19,6 +19,7 @@
 
 <script>
 import moment from "moment";
+import { auth } from "../firebase";
 import PostActions from "./PostActions";
 
 const DEFAULT_IMG = "https://cdn.vuetifyjs.com/images/cards/docks.jpg";
@@ -35,6 +36,10 @@ export default {
   computed: {
     img() {
       return this.item.imgUrl || DEFAULT_IMG;
+    },
+    isAuthUser() {
+      const userId = auth.currentUser.uid;
+      return userId === this.item.userId;
     },
   },
   filters: {
