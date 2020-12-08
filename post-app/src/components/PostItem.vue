@@ -23,10 +23,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import CommentInfo from "./CommentInfo";
-import PostInfo from "./PostInfo";
-import PostStatistics from "./PostStatistics";
-import CommentCreation from "./CommentCreation";
+import CommentInfo from "./comment/CommentInfo";
+import PostInfo from "./post-info/PostInfo";
+import PostStatistics from "./post-info/PostStatistics";
+import CommentCreation from "./comment/CommentCreation";
 
 export default {
   name: "PostItem",

@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="action__panel">
-      <h2>Posts</h2>
+      <h2>{{ $t("title.posts") }}</h2>
       <v-btn class="button" color="primary" @click="sesModalMode(true)">{{
         $t("posts.create")
       }}</v-btn>
     </div>
     <div class="panel__wrapper">
       <SearchField v-model="query" />
-      <SelectField />
+      <PostFilterField />
     </div>
     <PostList :query="query" />
   </div>
@@ -16,13 +16,13 @@
 
 <script>
 import { mapActions } from "vuex";
-import PostList from "../PostList";
-import SearchField from "../SearchField";
-import SelectField from "../SelectField";
+import PostList from "../components/PostList";
+import SearchField from "../components/actions-panel/SearchField";
+import PostFilterField from "../components/actions-panel/PostFilterField";
 
 export default {
   name: "Posts",
-  components: { PostList, SearchField, SelectField },
+  components: { PostList, SearchField, PostFilterField },
   data() {
     return {
       query: "",

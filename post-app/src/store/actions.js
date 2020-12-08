@@ -1,5 +1,5 @@
 import * as Api from '../api';
-import { router } from '../main';
+import router from '../configs/routes';
 
 export default {
   async loadPosts(ctx) {
@@ -30,21 +30,9 @@ export default {
     ctx.commit('updatePost', { updatedPost, id });
   },
 
-  setEditMode(ctx, id) {
-    ctx.commit('editingPost', id);
-  },
-
-  sesModalMode(ctx, isOpen) {
-    ctx.commit('setIsOpen', isOpen);
-  },
-
   async loadCommentsForPost(ctx, postId) {
     const comments = await Api.getCommentsByPostId(postId);
     ctx.commit('setComments', comments);
-  },
-
-  restPost(ctx) {
-    ctx.commit('restPost');
   },
 
   async likePost(ctx, { id, likes }) {
@@ -84,6 +72,18 @@ export default {
     await Api.logout();
     ctx.commit('setUserProfile', {});
     router.push('/login');
+  },
+
+  restPost(ctx) {
+    ctx.commit('restPost');
+  },
+
+  setEditMode(ctx, id) {
+    ctx.commit('editingPost', id);
+  },
+
+  sesModalMode(ctx, isOpen) {
+    ctx.commit('setIsOpen', isOpen);
   },
 
   resetErrors(ctx) {

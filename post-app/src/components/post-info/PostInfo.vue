@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import moment from "moment";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
+import DateAgoMixin from "../../mixins/dateAgoMixin";
 import PostActions from "./PostActions";
 
 const DEFAULT_IMG = "https://cdn.vuetifyjs.com/images/cards/docks.jpg";
@@ -42,15 +42,6 @@ export default {
       return userId === this.item.userId;
     },
   },
-  filters: {
-    formatDate(val) {
-      if (!val) {
-        return "-";
-      }
-
-      let date = val.toDate();
-      return moment(date).fromNow();
-    },
-  },
+  mixins: [DateAgoMixin],
 };
 </script>

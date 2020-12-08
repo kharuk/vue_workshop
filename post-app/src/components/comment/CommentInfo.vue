@@ -16,22 +16,14 @@
 </template>
 
 <script>
-import moment from "moment";
+import DateAgoMixin from "../../mixins/dateAgoMixin";
+
 export default {
   name: "PostItem",
   props: {
     comment: Object,
     last: Boolean,
   },
-  filters: {
-    formatDate(val) {
-      if (!val) {
-        return "-";
-      }
-
-      let date = val.toDate();
-      return moment(date).fromNow();
-    },
-  },
+  mixins: [DateAgoMixin],
 };
 </script>

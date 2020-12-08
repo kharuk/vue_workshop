@@ -7,8 +7,8 @@
 
 <script>
 import { mapActions } from "vuex";
-import LoginForm from "../LoginForm";
-import SignupForm from "../SignupForm";
+import LoginForm from "../components/authentification/LoginForm";
+import SignupForm from "../components/authentification/SignupForm";
 
 export default {
   components: {

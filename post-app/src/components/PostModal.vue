@@ -11,12 +11,12 @@
             <validation-provider
               v-slot="{ errors }"
               :name="$t('form.label.title')"
-              rules="required|max:10"
+              rules="required|max:20"
             >
               <v-text-field
                 filled
                 v-model="title"
-                :counter="10"
+                :counter="20"
                 :error-messages="errors"
                 :label="$t('form.label.title')"
                 required
@@ -53,38 +53,8 @@
 </template>
 
 <script>
-import { required, max } from "vee-validate/dist/rules";
-import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { mapActions, mapGetters } from "vuex";
-
-/* import { localize } from "vee-validate";
-
-localize({
-  en: {
-    messages: {
-      required: "{_field_} can not be empty",
-      max: (_, { length }) =>
-        `{_field_} may not be greater than ${length} characters`,
-    },
-  },
-  ru: {
-    messages: {
-      required: "{_field_} не может быть пустым",
-      max: (_, { length }) =>
-        `{_field_} должно иметь не более ${length} символов`,
-    },
-  },
-}); */
-
-extend("required", {
-  ...required,
-  message: `{_field_} can not be empty`,
-});
-
-extend("max", {
-  ...max,
-  message: "{_field_} may not be greater than {length} characters",
-});
 
 export default {
   name: "PostModal",
@@ -113,7 +83,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["addPost", "setEditMode", "updatePost"]),
+    ...mapActions(["addPost", "setEditMode", "updatePost", "sesModalMode"]),
     clear() {
       this.title = "";
       this.body = "";
@@ -121,7 +91,7 @@ export default {
     },
     closeModal() {
       this.clear();
-      this.$emit("closePostModal");
+      this.sesModalMode(false);
       if (this.editablePost) {
         this.setEditMode(null);
       }

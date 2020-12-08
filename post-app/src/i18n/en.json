@@ -8,7 +8,8 @@
   },
   "lang": {
     "en": "English",
-    "ru": "Russian"
+    "ru": "Russian",
+    "language": "Language"
   },
   "posts": {
     "details": "Details",
@@ -16,10 +17,20 @@
     "close": "Close",
     "comments": "Comments"
   },
+  "title": {
+    "post": "Post",
+    "posts": "Posts"
+  },
+  "filter": {
+    "my": "My posts",
+    "all": "All"
+  },
   "login": {
     "signupLink": "Create an account",
     "loginLink": "Back to Login",
-    "error": "Invalid login or password"
+    "error": "Invalid login or password",
+    "signupTitle": "Get Started",
+    "loginTitle": "Welcome Back"
   },
   "form": {
     "required": "Required",
@@ -36,9 +47,11 @@
     "submit": "Submit",
     "login": "Login",
     "signup": "Signup",
-    "filter": "What fields to find?",
-    "validation": {
-      "required": "can not be empty"
-    }
+    "filter": "What fields to find?"
+  },
+   "menu": {
+    "home": "Home",
+    "posts": "Posts",
+    "logout": "Logout"
   }
 }

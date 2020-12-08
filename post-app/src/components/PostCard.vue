@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import PostStatistics from "./PostStatistics";
-import PostInfo from "./PostInfo";
+import PostStatistics from "./post-info/PostStatistics";
+import PostInfo from "./post-info/PostInfo";
 
 export default {
   name: "PostCard",
